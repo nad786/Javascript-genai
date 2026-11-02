@@ -20,23 +20,11 @@ const embeddingsLLM = new GoogleGenerativeAIEmbeddings({
     model: "gemini-embedding-001"
 });
 
-const embedding = await embeddingsLLM.embedQuery("Hello world");
-console.log(embedding.length);
+// const embedding = await embeddingsLLM.embedQuery("Hello world");
+// console.log(embedding.length);
 
 const pinecone = new Pinecone();
 
-
-// await pinecone.createIndex({
-//     name: 'index-3072',
-//     dimension: 3072, // Set dimension to 3072
-//     metric: 'cosine',
-//     spec: {
-//         serverless: {
-//             cloud: 'aws',
-//             region: 'us-east-1',
-//         },
-//     },
-// });
 
 const pineconeIndex = pinecone.index('index-3072');
 // const pineconeIndex = pinecone.index('langchain-docs-openai');
