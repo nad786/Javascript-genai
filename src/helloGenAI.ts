@@ -9,12 +9,16 @@ dotenv.config();
 // For Google Gemini model, uncomment the following statement and comment the openAI statement above
 // Please ensure GOOGLE_API_KEY env variable is set in .env file
 const llm = new ChatGoogleGenerativeAI({
-  model: "gemini-3.8-flash"   // if this model is not available anymore then please check another available model from google gemini api documentation
+  model: "gemini-3.6-flash"   // if this model is not available anymore then please check another available model from google gemini api documentation
 });
+try {
 
-const response = await llm.invoke(
-  "Describe the importance of learning generative AI for javascript developers in 50 words."
-);
+  const response = await llm.invoke(
+    "Describe the importance of learning generative AI for javascript developers in 50 words."
+  );
+  console.log(response);
+} catch(err) {
+  console.error(err);
+}
 
-console.log(response);
    

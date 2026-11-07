@@ -8,14 +8,36 @@ import { chat, ChatHandler } from "../utils/chat";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
 
-const promt = ChatPromptTemplate.fromMessages([
-    
-    "Human",
-    `You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
-    Question: {question} 
-    Context: {context} 
-    Answer:`
+// 1. Better prompt
+const prompt = ChatPromptTemplate.fromMessages([
+    [
+        "system",
+        `You are an expert technical documentation assistant.
+
+Your task is to answer questions using the provided documentation context.
+
+Instructions:
+- Give detailed and informative answers.
+- Explain concepts step by step when necessary.
+- Include relevant examples when available in the context.
+- Do not unnecessarily shorten your answers.
+- Use bullet points and code examples where appropriate.
+- If the answer is not available in the context, clearly say that you don't know.
+- Do not make up information.
+
+Provide a clear and helpful answer.`
+    ],
+    [
+        "human",
+        `Question: {question}
+
+Documentation Context:
+{context}
+
+Answer:`
+    ]
 ]);
+
 
 // const llm = new ChatOpenAI({
 //     model: "gemini-pro-13b",
@@ -25,8 +47,8 @@ const promt = ChatPromptTemplate.fromMessages([
 
 const llm = new ChatGoogleGenerativeAI({
     model: "gemini-3.5-flash",
-    temperature: 0.2,
-    maxOutputTokens: 512,
+    // temperature: 0.2,
+    // maxOutputTokens: 512,
 });
 
 const outputParser = new StringOutputParser();
@@ -44,7 +66,7 @@ const generativeChain = RunnableSequence.from([
         question: (input) => input.question,
         context: retiverChain
     },
-    promt, 
+    prompt, 
     llm, 
     outputParser
 ]);
